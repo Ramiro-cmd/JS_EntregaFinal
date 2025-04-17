@@ -1,0 +1,9 @@
+[
+    {"id":1,"titulo":"Harry Potter y la piedra filosofal","desc":"Harry Potter y la piedra filosofal, es el primer libro de la serie literaria Harry Potter, escrito por la autora británica J. K. Rowling entre 1990 y 1995. Publicado en el año 1997, supuso además el debut de Rowling como escritora profesional.","precio":10000},
+    {"id":2,"titulo":"Harry Potter y la camara de los secretos","desc":"Harry Potter y la cámara secreta, es el segundo libro de la serie literaria Harry Potter, escrito por la autora británica J. K. Rowling en 1998.","precio":10000},
+    {"id":3,"titulo":"Harry Potter y el prisionero de Azkaban","desc":"Harry Potter y el prisionero de Azkaban, es el tercer libro de la serie literaria Harry Potter, escrita por la autora británica J. K. Rowling en 1999. El libro fue publicado en el Reino Unido el 8 de julio de 1999 por la editorial Bloomsbury y en los Estados Unidos el 8 de septiembre por Scholastic.","precio":10000},
+    {"id":4,"titulo":"Harry Potter y el cáliz de fuego","desc":"Harry Potter y el cáliz de fuego es el cuarto libro de la serie literaria llamada Harry Potter, escrita por la autora británica J. K. Rowling en 2000. Ella, antes de que se publicase el libro advirtió que uno de los personajes del libro moriría, dejando mucha especulación acerca de quién podría ser.","precio":10000}
+]
+
+
+
