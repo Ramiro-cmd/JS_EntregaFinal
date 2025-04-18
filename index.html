@@ -31,7 +31,7 @@
 
     <main>
       <h2>Nuestra Galeria de Libros</h2>
-      <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Molestiae, voluptates! Voluptates nisi consequuntur enim nulla repellendus quas perspiciatis consectetur natus.</p>
+      <p>Un rincón para los amantes de la lectura. Descubre historias que inspiran, enseñan y te hacen soñar. Desde clásicos hasta novedades, nuestra tienda de libros es el lugar perfecto para perderse entre páginas y encontrar tu próxima gran aventura.</p>
      
       <div class="prods-js">
 
@@ -39,12 +39,12 @@
       </div>
 
       <div class="carrito-js">
-        <!-- Button trigger modal -->
+        <!-- Boton para abrir modal del carrito -->
         <button type="button" class="btn btn-primary ver-carro" data-bs-toggle="modal" data-bs-target="#exampleModal">
           Ver Mi Carrito
         </button>
 
-        <!-- Modal -->
+        <!-- Modal del carrito -->
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog modal-dialog-scrollable modal-lg">
             <div class="modal-content">
@@ -52,32 +52,76 @@
                 <h1 class="modal-title fs-5" id="exampleModalLabel">Mi Carrito</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
-              <div class="modal-body">
+              <div class="modal-carro modal-body">
+                <!-- Libros del carrito por js -->
                 
-                
-
-
               </div>
               <div class="modal-footer">
                 <span class="total"></span>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="vaciar btn btn-danger" >Vaciar Carrito</button>
+                
+                <button type="button" class="btn btn-success continuar" data-bs-toggle="modal" data-bs-target="#modalCompra" >Continuar Comprando</button>
+                
               </div>
             </div>
           </div>
         </div>
-
-
       </div>
-        
+
       
+
+
+      <!-- Modal Confirmar Compra -->
+      <div class="modal fade" id="modalCompra" tabindex="-1" aria-labelledby="modalCompraLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="modalCompraLabel">Confirmación de Compra</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body confirmar-body">
+              <!-- Resimen de la compra js -->
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+              
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#compraFinalizadaModal">
+                Finalizar Compra
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
       
+      <!-- Modal Cartel Compra Finalizada -->
+      <div class="modal fade" id="compraFinalizadaModal" tabindex="-1" aria-labelledby="compraFinalizadaModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">Compra Finalizada</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <h2>Muchas Gracias por su Compra!!!</h2>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+
+
+
+
 
     </main>
 
-    <footer>
-
-    </footer>
 
 
 

@@ -64,7 +64,7 @@ const agregarAlCarrito = (eventCarrito) =>{
 
 //--------------------------------------MOSTRAR CARRITO 
 const mostrarCarrito = () =>{
-  const contenedorCarrito = document.querySelector(".modal-body")
+  const contenedorCarrito = document.querySelector(".modal-carro")
   contenedorCarrito.innerHTML = ""
   
   //HEADER DEL MODAL
@@ -91,7 +91,7 @@ const mostrarCarrito = () =>{
         <h5 class="card-title">${lib.titulo}</h5>
         <span class="precio">${lib.cantidad}</span>
         <span class="precio">${lib.precioCantidad}</span>
-        <button type="button" class="borrar-libro btn btn-outline-danger data-id="${lib.id}">X</button>
+        <button type="button" class="borrar-libro btn btn-outline-danger" data-id="${lib.id}">X</button>
       </div>  
     `
 
@@ -119,10 +119,61 @@ const borrarLibro = (eventBorrar) => {
 
   if(index !== -1){
     carrito.splice(index,1)
+    total = carrito.reduce((acc, item) => acc + item.precioCantidad, 0)
     mostrarCarrito()
-  }
+  } 
 }
 
+//VACIAR CARRITO
+const vaciar = () => {
+  carrito = []
+  total = 0
+  mostrarCarrito()
+}
+//BOTON DE VACIAR CARRITO
+let vaciarCarro = document.querySelector(".vaciar")
+vaciarCarro.addEventListener("click",vaciar)
+
+//CONFIRMAR COMPRA
+const mostrarFormularioCompra = () => {
+  const contenedorConfirmacion = document.querySelector(".confirmar-body")
+  contenedorConfirmacion.innerHTML = ""
+
+  const totalLibros = carrito.reduce((acc, item) => acc + item.cantidad, 0)
+  const totalPrecio = carrito.reduce((acc, item) => acc + item.precioCantidad, 0)
+
+  // Resumen
+  const resumen = document.createElement("div")
+  resumen.classList.add("mb-4")
+  resumen.innerHTML = `
+    <h5>Resumen de tu compra</h5>
+    <p>Total de libros: <strong>${totalLibros}</strong></p>
+    <p>Total a pagar: <strong>$${totalPrecio}</strong></p>
+  `
+  contenedorConfirmacion.appendChild(resumen)
+
+  // Formulario
+  const form = document.createElement("form")
+  form.innerHTML = `
+    <div class="mb-3">
+      <label for="nombre" class="form-label">Nombre completo</label>
+      <input type="text" class="form-control" id="nombre" required>
+    </div>
+    <div class="mb-3">
+      <label for="email" class="form-label">Correo electrónico</label>
+      <input type="email" class="form-control" id="email" required>
+    </div>
+    <div class="mb-3">
+      <label for="direccion" class="form-label">Dirección de envío</label>
+      <input type="text" class="form-control" id="direccion" required>
+    </div>
+  `
+  contenedorConfirmacion.appendChild(form)
+}
+
+//BOTON DE CONFIRMAR COMPRA
+let botonContinuar = document.querySelector(".continuar")
+botonContinuar.addEventListener("click", mostrarFormularioCompra)
 
 //BOTON DE ABRIR MODAL DEL CARRITO
 let botonCarrito = document.querySelector(".ver-carro")

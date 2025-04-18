@@ -4,7 +4,7 @@
     box-sizing: border-box;
 }
 
-.prods-js{
+.prods-js {
     display: grid;
     grid-template-columns: repeat(4,1fr);
     justify-items: center;
