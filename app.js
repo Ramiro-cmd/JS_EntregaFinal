@@ -44,7 +44,11 @@ const agregarAlCarrito = (eventCarrito) =>{
 
   if(libro){
     let cantidad = parseInt(prompt(`¿Cuántas unidades de ${libro.titulo} deseas agregar?`))
+
     if(cantidad > 0){
+      // if(carrito.id === libro.id){
+
+      // }
       let precioCantidad = libro.precio * cantidad
       carrito.push( {...libro, cantidad, precioCantidad})
       total = precioCantidad + total 
@@ -58,7 +62,7 @@ const agregarAlCarrito = (eventCarrito) =>{
 
 
 
-//MOSTRAR CARRITO 
+//--------------------------------------MOSTRAR CARRITO 
 const mostrarCarrito = () =>{
   const contenedorCarrito = document.querySelector(".modal-body")
   contenedorCarrito.innerHTML = ""
@@ -85,9 +89,9 @@ const mostrarCarrito = () =>{
     const carritoLibro = `
       <div class="d-flex justify-content-between mb-2">
         <h5 class="card-title">${lib.titulo}</h5>
-        <p class="precio">${lib.cantidad}</p>
-        <p class="precio">${lib.precioCantidad}</p>
-        <button type="button" class="btn btn-outline-danger">X</button>
+        <span class="precio">${lib.cantidad}</span>
+        <span class="precio">${lib.precioCantidad}</span>
+        <button type="button" class="borrar-libro btn btn-outline-danger data-id="${lib.id}">X</button>
       </div>  
     `
 
@@ -95,13 +99,32 @@ const mostrarCarrito = () =>{
     contenedorCarrito.appendChild(divLibro)
   })
 
-  //FOOTER DEL MODAL
+
+  //TOTAL DEL CARRITO
   const totalFinal = document.querySelector(".total")
   totalFinal.classList.add("texto-total")
   totalFinal.innerHTML = `Total ${total}`
 
+  //BOTON DE BORRAR PRODUCTO DEL CARRITO
+  document.querySelectorAll(".borrar-libro").forEach((btn) => {
+    btn.addEventListener("click", borrarLibro);
+  });
 }
 
+//BORRAR LIBRO DEL CARRITO
+const borrarLibro = (eventBorrar) => {
+  
+  const idBorrar = parseInt(eventBorrar.target.dataset.id)
+  const index = carrito.findIndex((lib) => lib.id === idBorrar )
+
+  if(index !== -1){
+    carrito.splice(index,1)
+    mostrarCarrito()
+  }
+}
+
+
+//BOTON DE ABRIR MODAL DEL CARRITO
 let botonCarrito = document.querySelector(".ver-carro")
 botonCarrito.addEventListener("click",mostrarCarrito)
 
