@@ -1,6 +1,6 @@
 let productos =[]
 let carrito = JSON.parse(localStorage.getItem("carrito")) || []
-let total = 0
+let total = parseFloat(localStorage.getItem("total")) || 0
 
 
 //MOSTRAR LOS LIBROS EN EL DOM
@@ -12,7 +12,7 @@ const mostrarDom = (data) => {
     const DivProd = document.createElement("div")
     DivProd.classList.add("producto")
 
-    const img = `libro${producto.id}.jpeg`;
+    const img = `libro${producto.id}.jpeg`
 
     const cartaprod =`
       <div class="card" style="width: 18rem;">
@@ -38,24 +38,52 @@ const mostrarDom = (data) => {
 
 //AGREGAR AL CARRITO
 
-const agregarAlCarrito = (eventCarrito) =>{
+const agregarAlCarrito = (eventCarrito) => {
   const idLibro = parseInt(eventCarrito.target.dataset.id)
   const libro = productos.find((l) => l.id === idLibro)
 
-  if(libro){
-    let cantidad = parseInt(prompt(`¿Cuántas unidades de ${libro.titulo} deseas agregar?`))
+  if (libro) {
+    Swal.fire({
+      title: `¿Cuántas unidades de "${libro.titulo}" deseas agregar?`,
+      icon: "question",
+      input: "range",
+      inputLabel: "Cantidad",
+      inputAttributes: {
+        min: "1",
+        max: "10", 
+        step: "1"
+      },
+      inputValue: 1,
+      showCancelButton: true,
+      confirmButtonText: "Agregar al carrito",
+      cancelButtonText: "Cancelar"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const cantidad = parseInt(result.value)
 
-    if(cantidad > 0){
-      // if(carrito.id === libro.id){
-
-      // }
-      let precioCantidad = libro.precio * cantidad
-      carrito.push( {...libro, cantidad, precioCantidad})
-      total = precioCantidad + total 
-      alert(`Agregaste ${cantidad} unidad(es) al carrito`)
-    }else{
-      alert("cantidad incorrecta")
-    }
+        if (cantidad > 0) {
+          const index = carrito.findIndex((item) => item.id === libro.id)
+        
+          if (index !== -1) {
+            // Ya existe, sumamos cantidad y precio
+            carrito[index].cantidad += cantidad
+            carrito[index].precioCantidad = carrito[index].cantidad * libro.precio
+          } else {
+            // No existe, lo agregamos
+            carrito.push({ ...libro, cantidad, precioCantidad: libro.precio * cantidad })
+          }
+        
+          // Actualizamos el total
+          total = carrito.reduce((acc, item) => acc + item.precioCantidad, 0)
+        
+          // Guardamos en localStorage
+          localStorage.setItem("carrito", JSON.stringify(carrito))
+          localStorage.setItem("total", total)
+        
+          Swal.fire(`Se agregaron ${cantidad} unidades del libro: ${libro.titulo}`)
+        }
+      }
+    })
   }
 }
 
@@ -121,6 +149,8 @@ const borrarLibro = (eventBorrar) => {
     carrito.splice(index,1)
     total = carrito.reduce((acc, item) => acc + item.precioCantidad, 0)
     mostrarCarrito()
+    localStorage.setItem("carrito", JSON.stringify(carrito))
+    localStorage.setItem("total", total)
   } 
 }
 
@@ -129,6 +159,10 @@ const vaciar = () => {
   carrito = []
   total = 0
   mostrarCarrito()
+  localStorage.removeItem("carrito")
+  localStorage.removeItem("total")
+
+  
 }
 //BOTON DE VACIAR CARRITO
 let vaciarCarro = document.querySelector(".vaciar")
@@ -136,13 +170,23 @@ vaciarCarro.addEventListener("click",vaciar)
 
 //CONFIRMAR COMPRA
 const mostrarFormularioCompra = () => {
+  if (carrito.length === 0) {
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: "Tu carrito aun esta vacio, agrega productos",
+      
+    });
+    
+    return
+  }
+
   const contenedorConfirmacion = document.querySelector(".confirmar-body")
   contenedorConfirmacion.innerHTML = ""
 
   const totalLibros = carrito.reduce((acc, item) => acc + item.cantidad, 0)
   const totalPrecio = carrito.reduce((acc, item) => acc + item.precioCantidad, 0)
 
-  // Resumen
   const resumen = document.createElement("div")
   resumen.classList.add("mb-4")
   resumen.innerHTML = `
@@ -152,7 +196,6 @@ const mostrarFormularioCompra = () => {
   `
   contenedorConfirmacion.appendChild(resumen)
 
-  // Formulario
   const form = document.createElement("form")
   form.innerHTML = `
     <div class="mb-3">
@@ -169,7 +212,53 @@ const mostrarFormularioCompra = () => {
     </div>
   `
   contenedorConfirmacion.appendChild(form)
+
+  const modalCompra = new bootstrap.Modal(document.getElementById('modalCompra'))
+  modalCompra.show()
 }
+
+
+//FINALIZAR LA COMPRA
+const finalizarCompra = () => {
+  
+  const nombre = document.getElementById("nombre").value.trim()
+  const email = document.getElementById("email").value.trim()
+  const direccion = document.getElementById("direccion").value.trim()
+
+  if (!nombre || !email || !direccion) {
+    Swal.fire({
+      icon: "warning",
+      title: "Campos incompletos",
+      text: "Por favor, completa todos los campos antes de finalizar la compra.",
+    })
+    return; // Detiene el proceso si hay campos vacíos
+  }
+  
+
+
+  vaciar()
+  const modalCompra = bootstrap.Modal.getInstance(document.getElementById('modalCompra'))
+  if (modalCompra) {
+    modalCompra.hide();
+  }
+
+  Swal.fire({
+    title: "Muchas Gracias por su compra!",
+    icon: "success",
+    draggable: true
+  });
+  
+
+}
+
+
+//VACIAR CARRITO DESPUES DE LA COMPRA
+// document.querySelector('#compraFinalizadaModal').addEventListener('show.bs.modal', vaciar)
+
+
+//BOTON DE FINALIZAR LA COMPRA
+let botonFinalizarCompra = document.querySelector(".fin-compra")
+botonFinalizarCompra.addEventListener("click", finalizarCompra)
 
 //BOTON DE CONFIRMAR COMPRA
 let botonContinuar = document.querySelector(".continuar")
@@ -183,11 +272,22 @@ botonCarrito.addEventListener("click",mostrarCarrito)
 
 //FETCH DE LOS DATOS DEL .JSON
 const getData = async () => {
-  let data = await fetch("./prods.json")
-  .then((res) => res.json())
-  .then((json) => {return json})
-  productos = data
-  mostrarDom(data)
+  try {
+    let data = await fetch("./prods.json")
+    data = await data.json()
+    productos = data
+    mostrarDom(data)
+  } catch (error) {
+    console.error("Ocurrió un error al obtener los datos:", error)
+    
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: "Ocurrio un error al cargar los productos, intenta nuevamente"
+      
+    })
+    
+  }
 }
 
 getData()
