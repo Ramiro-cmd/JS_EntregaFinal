@@ -1,7 +1,10 @@
+let productos =[]
+let carrito = JSON.parse(localStorage.getItem("carrito")) || []
+let total
 
 
 //MOSTRAR LOS LIBROS EN EL DOM
-const mnostrarDom = (data) => {
+const mostrarDom = (data) => {
   const contenedorProductos = document.querySelector(".prods-js")
   contenedorProductos.innerHTML = ""
 
@@ -18,7 +21,7 @@ const mnostrarDom = (data) => {
           <h5 class="card-title">${producto.titulo}</h5>
           <p class="card-text">${producto.desc}</p>
           <p class="precio">${producto.precio}</p>
-          <button type="button" class="btn btn-primary agregar" data-id="${producto.id}">Agregar al carrito</button>
+          <button type="button" class="agregar btn btn-primary  " data-id="${producto.id}">Agregar al carrito</button>
         </div>
       </div>  
     `
@@ -26,9 +29,8 @@ const mnostrarDom = (data) => {
     contenedorProductos.appendChild(DivProd)
   })
 
-  document.querySelector(".agregar").forEach((btn) => {
-    btn.addEventListener("click", agregarAlCarrito)
-
+  document.querySelectorAll(".agregar").forEach((btn) => {
+    btn.addEventListener("click", agregarAlCarrito);
   })
 
 
@@ -36,9 +38,23 @@ const mnostrarDom = (data) => {
 
 //AGREGAR AL CARRITO
 
-const agregarAlCarrito = () =>{
-  
+const agregarAlCarrito = (eventCarrito) =>{
+  const idLibro = parseInt(eventCarrito.target.dataset.id)
+  const libro = productos.find((l) => l.id === idLibro)
+
+  if(libro){
+    let cantidad = parseInt(prompt(`¿Cuántas unidades de ${libro.titulo} deseas agregar?`))
+    if(cantidad > 0){
+      carrito.push( {...libro, cantidad})
+      alert(`Agregaste ${cantidad} unidad(es) al carrito`)
+    }else{
+      alert("cantidad incorrecta")
+    }
+  }
 }
+
+
+
 
 
 
@@ -48,8 +64,8 @@ const getData = async () => {
   let data = await fetch("./prods.json")
   .then((res) => res.json())
   .then((json) => {return json})
-
-  mnostrarDom(data)
+  productos = data
+  mostrarDom(data)
 }
 
 getData()
