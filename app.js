@@ -21,7 +21,7 @@ const mostrarDom = (data) => {
           <h5 class="card-title">${producto.titulo}</h5>
           <p class="card-text">${producto.desc}</p>
           <p class="precio"><b>Precio:</b> $${producto.precio}</p>
-          <button type="button" class="agregar btn btn-primary  " data-id="${producto.id}">Agregar al carrito</button>
+          <button type="button" class="agregar btn " data-id="${producto.id}">Agregar al carrito</button>
         </div>
       </div>  
     `

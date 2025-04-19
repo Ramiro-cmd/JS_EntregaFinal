@@ -20,7 +20,8 @@ body{
 }
 
 .ver-carro{
-    
+    margin-top: 3rem;
+    margin-bottom: 3rem;
 }
 
 header {
@@ -34,7 +35,19 @@ header {
     border-radius: 1.5rem;
 }
 
+.agregar{
+    color: white;
+    border-color: #655CC9;
+    background-color: #655CC9;
+}
+
+.agregar:hover{
+    border-color: #655CC9;
+    color: #655cc9;
+}
+
 .card-bg{
+
     background-color: #EFB6C8;
     
 }
