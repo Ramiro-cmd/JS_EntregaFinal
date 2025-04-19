@@ -15,12 +15,12 @@ const mostrarDom = (data) => {
     const img = `libro${producto.id}.jpeg`
 
     const cartaprod =`
-      <div class="card" style="width: 18rem;">
+      <div class="card-bg card h-100 d-flex flex-column" style="width: 18rem;">
         <img src="img/${img}" class="card-img-top" alt="imagen del libro ${producto.id}">
         <div class="card-body">
           <h5 class="card-title">${producto.titulo}</h5>
           <p class="card-text">${producto.desc}</p>
-          <p class="precio">${producto.precio}</p>
+          <p class="precio"><b>Precio:</b> $${producto.precio}</p>
           <button type="button" class="agregar btn btn-primary  " data-id="${producto.id}">Agregar al carrito</button>
         </div>
       </div>  
@@ -65,18 +65,16 @@ const agregarAlCarrito = (eventCarrito) => {
           const index = carrito.findIndex((item) => item.id === libro.id)
         
           if (index !== -1) {
-            // Ya existe, sumamos cantidad y precio
+            
             carrito[index].cantidad += cantidad
             carrito[index].precioCantidad = carrito[index].cantidad * libro.precio
           } else {
-            // No existe, lo agregamos
+           
             carrito.push({ ...libro, cantidad, precioCantidad: libro.precio * cantidad })
           }
-        
-          // Actualizamos el total
+      
           total = carrito.reduce((acc, item) => acc + item.precioCantidad, 0)
         
-          // Guardamos en localStorage
           localStorage.setItem("carrito", JSON.stringify(carrito))
           localStorage.setItem("total", total)
         
@@ -231,7 +229,7 @@ const finalizarCompra = () => {
       title: "Campos incompletos",
       text: "Por favor, completa todos los campos antes de finalizar la compra.",
     })
-    return; // Detiene el proceso si hay campos vacíos
+    return; 
   }
   
 
@@ -246,14 +244,10 @@ const finalizarCompra = () => {
     title: "Muchas Gracias por su compra!",
     icon: "success",
     draggable: true
-  });
+  })
   
-
 }
 
-
-//VACIAR CARRITO DESPUES DE LA COMPRA
-// document.querySelector('#compraFinalizadaModal').addEventListener('show.bs.modal', vaciar)
 
 
 //BOTON DE FINALIZAR LA COMPRA
