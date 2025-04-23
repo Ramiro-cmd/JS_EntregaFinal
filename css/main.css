@@ -8,6 +8,15 @@ body{
     background-color: #A888B5;
 }
 
+.titulos{
+    padding-top: 2rem;
+    justify-items: center;
+}
+
+.parrafo{
+    font-size: large;
+    text-align: center  ;
+}
 
 .prods-js {
     display: grid;
